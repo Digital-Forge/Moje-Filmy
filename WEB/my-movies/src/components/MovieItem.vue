@@ -18,15 +18,22 @@
 </template>
 
 <script>
+import axios from 'axios'
+
 export default {
     props: {
         movie: {
             type: Object,
             required: true,
+        },
+        apiURL: {
+            type: String,
+            required: true,
         }
     },
     data() {
         return {
+            apiUrl: this.apiURL,
             id: this.movie.id,
             title: this.movie.title,
             year: this.movie.year
@@ -37,10 +44,15 @@ export default {
             alert(`add`);
         },
         editMovie() {
-            alert(`add`);
+            alert(`edit`);
         },
         deleteMovie() {
-            alert(`add`);
+            if (confirm('Are you sure you want to delete this movie?'))
+            {
+                axios.get(this.apiUrl, this.id);
+
+                alert("Delete");
+            }
         }
     }
 }

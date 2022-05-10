@@ -1,7 +1,7 @@
 <template>
   <div class="outlineContainer">
     <div class="container">
-      <MovieListApp />
+      <MovieListApp :apiURL='apiURL'/>
     </div>
   </div>
 </template>
@@ -10,6 +10,11 @@
 import MovieList from './components/MovieList.vue'
 
 export default {
+  data() {
+    return {
+      apiURL: `http://localhost:44379/api/Movies`
+    }
+  },
   components: {
     MovieListApp: MovieList
 }
@@ -23,8 +28,8 @@ export default {
   padding: 20px;
   margin: 0px;
   background-color: darkslategray;
-  border-left: 50px dashed white;
-  border-right: 50px dashed white;
+  border-left: 50px dashed lightgrey;
+  border-right: 50px dashed lightgrey;
 }
 .outlineContainer{
   width: 750px;

@@ -6,11 +6,7 @@
         <button class="button-53" @click="addMovie">Add</button>
       </div>
     </div>
-    <MovieItem 
-      v-for="item in movies" 
-      :key="item.id" 
-      :movie="item"
-      />
+    <MovieItem v-for="item in movies" :key="item.id" :movie="item" :apiURL="apiUrl" />
   </div>
 </template>
 
@@ -18,13 +14,20 @@
 import MovieItem from './MovieItem.vue';
 
 export default {
+  props: {
+    apiURL: {
+      type: String,
+      required: true,
+    }
+  },
   data() {
-    return{
+    return {
+      apiUrl: this.apiURL,
       movies: [
-        {id: 1, title: `Alibaba`, year : 1999},
-        {id: 2, title: `Gensi`, year : 2002},
-        {id: 3, title: `Sex`, year : 2050},
-        {id: 4, title: `Forever`, year : 1950},
+        { id: 1, title: `Alibaba`, year: 1999 },
+        { id: 2, title: `Gensi`, year: 2002 },
+        { id: 3, title: `Sex`, year: 2050 },
+        { id: 4, title: `Forever`, year: 1950 },
       ]
     }
   },
@@ -32,8 +35,7 @@ export default {
     MovieItem
   },
   methods: {
-    addMovie()
-    {
+    addMovie() {
       alert(`add`);
     },
   }
@@ -41,20 +43,20 @@ export default {
 </script>
 
 <style scoped>
-.filmFrame{
-    padding: 10px;
-    margin-top: 30px;
-    margin-left:auto;
-    margin-right:auto;
-    background-color: antiquewhite;
-    height: 300px;
-    width: 500px;
-    border-radius: 40px;
-    border: 5px solid black;
+.filmFrame {
+  padding: 10px;
+  margin-top: 30px;
+  margin-left: auto;
+  margin-right: auto;
+  background-color: antiquewhite;
+  height: 300px;
+  width: 500px;
+  border-radius: 40px;
+  border: 5px solid black;
 }
 
 .addBottom {
-    margin-left: 15px;
+  margin-left: 15px;
 }
 
 h1 {
@@ -67,7 +69,7 @@ h1 {
   box-sizing: border-box;
   color: #000000;
   display: flex;
-  font-family: ui-sans-serif,system-ui,-apple-system,system-ui,"Segoe UI",Roboto,"Helvetica Neue",Arial,"Noto Sans",sans-serif,"Apple Color Emoji","Segoe UI Emoji","Segoe UI Symbol","Noto Color Emoji";
+  font-family: ui-sans-serif, system-ui, -apple-system, system-ui, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
   font-size: 1rem;
   font-weight: 700;
   justify-content: center;

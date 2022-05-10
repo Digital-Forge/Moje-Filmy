@@ -1,11 +1,23 @@
 ﻿using API.DbContext;
 using API.DTO;
+using API.Model;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace API.Service
 {
-    public class MovieService
+    public interface IMovieService
+    {
+        IEnumerable<MovieDTO> GetMoviesList();
+        MovieDTO GetMovieById(int id);
+        int CreateMovie(MovieDTO input);
+        bool UpdateMovie(MovieDTO input);
+        bool DeleteMovie(int id);
+
+    }
+
+    public class MovieService : IMovieService
     {
         private readonly Context _context;
 
@@ -16,27 +28,84 @@ namespace API.Service
 
         public IEnumerable<MovieDTO> GetMoviesList()
         {
-            throw new NotImplementedException();
+            return _context.Movies.Select(x => new MovieDTO
+            {
+                Id = x.Id,
+                Title = x.Title,
+                ProductionYear = x.ProductionYear
+            }).ToList();
         }
 
         public MovieDTO GetMovieById(int id)
         {
-            throw new NotImplementedException();
+            return _context.Movies.Where(x => x.Id == id).Select(x => new MovieDTO
+            {
+                Id = x.Id,
+                Title = x.Title,
+                ProductionYear = x.ProductionYear
+            }).FirstOrDefault();
         }
 
         public int CreateMovie(MovieDTO input)
         {
-            throw new NotImplementedException();
+            try
+            {
+                var buff = new Movie
+                {
+                    Title = input.Title,
+                    ProductionYear = input.ProductionYear
+                };
+
+                _context.Movies.Add(buff);
+                _context.SaveChanges();
+
+                return buff.Id;
+            }
+            catch
+            {
+                return 0;
+            }
         }
 
-        public int UpdateMovie(MovieDTO input)
+        public bool UpdateMovie(MovieDTO input)
         {
-            throw new NotImplementedException();
+            try
+            {
+                var buff = new Movie
+                {
+                    Id = input.Id,
+                    Title = input.Title,
+                    ProductionYear = input.ProductionYear
+                };
+
+                _context.Movies.Update(buff);
+                _context.SaveChanges();
+
+                return true;
+            }
+            catch
+            {
+                return false;
+            }
         }
 
-        public int DeleteMovie(MovieDTO input)
+        public bool DeleteMovie(int id)
         {
-            throw new NotImplementedException();
+            try
+            {
+                var buff = _context.Movies.Where(x => x.Id == id).FirstOrDefault();
+
+                if (buff == null) return false;
+
+                _context.Movies.Remove(buff);
+                _context.SaveChanges();
+
+                return true;
+            }
+            catch
+            {
+                return false;
+            }
         }
     }
 }

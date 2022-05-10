@@ -1,4 +1,5 @@
-﻿using API.Service;
+﻿using API.DTO;
+using API.Service;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
@@ -11,9 +12,9 @@ namespace API.Controllers
     [ApiController]
     public class MoviesController : ControllerBase
     {
-        private readonly MovieService _movieService;
+        private readonly IMovieService _movieService;
 
-        public MoviesController(MovieService movieService)
+        public MoviesController(IMovieService movieService)
         {
             this._movieService = movieService;
         }
@@ -22,35 +23,38 @@ namespace API.Controllers
         [HttpGet]
         public IActionResult Get()
         {
-            throw new NotImplementedException();
+            return new JsonResult(_movieService.GetMoviesList());
         }
 
         // GET api/<MoviesController>/5
         [HttpGet("{id}")]
         public IActionResult Get(int id)
         {
-            throw new NotImplementedException();
+            return new JsonResult(_movieService.GetMovieById(id));
         }
 
         // POST api/<MoviesController>
         [HttpPost]
-        public IActionResult Post([FromBody] string value)
+        public IActionResult Post(MovieDTO input)
         {
-            throw new NotImplementedException();
+            if (_movieService.CreateMovie(input) > 0) return Ok();
+            else                                      return BadRequest();
         }
 
         // PUT api/<MoviesController>/5
         [HttpPut("{id}")]
-        public IActionResult Put(int id, [FromBody] string value)
+        public IActionResult Put(MovieDTO input)
         {
-            throw new NotImplementedException();
+            if (_movieService.UpdateMovie(input)) return Ok();
+            else                                  return BadRequest();
         }
 
         // DELETE api/<MoviesController>/5
         [HttpDelete("{id}")]
         public IActionResult Delete(int id)
         {
-            throw new NotImplementedException();
+            if (_movieService.DeleteMovie(id)) return Ok();
+            else                               return BadRequest();
         }
     }
 }
