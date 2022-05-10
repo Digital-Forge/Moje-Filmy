@@ -1,0 +1,14 @@
+#app {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    overflow:hidden;
+    padding: 0;
+    display: box;
+}
+
+body {
+    margin: 0;
+    text-align: center;
+    background-color: lightgrey;
+}
