@@ -32,7 +32,7 @@ namespace API.Service
             {
                 Id = x.Id,
                 Title = x.Title,
-                ProductionYear = x.ProductionYear
+                Year = x.ProductionYear
             }).ToList();
         }
 
@@ -42,7 +42,7 @@ namespace API.Service
             {
                 Id = x.Id,
                 Title = x.Title,
-                ProductionYear = x.ProductionYear
+                Year = x.ProductionYear
             }).FirstOrDefault();
         }
 
@@ -53,7 +53,7 @@ namespace API.Service
                 var buff = new Movie
                 {
                     Title = input.Title,
-                    ProductionYear = input.ProductionYear
+                    ProductionYear = input.Year
                 };
 
                 _context.Movies.Add(buff);
@@ -75,7 +75,7 @@ namespace API.Service
                 {
                     Id = input.Id,
                     Title = input.Title,
-                    ProductionYear = input.ProductionYear
+                    ProductionYear = input.Year
                 };
 
                 _context.Movies.Update(buff);

@@ -41,8 +41,8 @@ namespace API.Controllers
             else                                      return BadRequest();
         }
 
-        // PUT api/<MoviesController>/5
-        [HttpPut("{id}")]
+        // PUT api/<MoviesController>
+        [HttpPut]
         public IActionResult Put(MovieDTO input)
         {
             if (_movieService.UpdateMovie(input)) return Ok();
