@@ -6,12 +6,28 @@
         <button class="button-53" @click="addMovie">Add</button>
       </div>
     </div>
-    <MovieItem v-for="item in movies" :key="item.id" :movie="item" :apiURL="apiUrl" />
+    <MovieItem 
+      v-for="item in movies" 
+      :key="item.id" 
+      :movie="item" 
+      :apiURL="apiURL" 
+      @showMovie="handlerShowMovie"
+      @editMovie="handlerEditMovie" 
+      @refresh="handlerRefresh" />
+    <MovieData 
+      v-if="modale.open" 
+      :apiURL="apiURL" 
+      :editStatus="modale.edit"
+      :movie="modale.dataBuff"
+      @closeModal="handlerCloseModal" 
+      @save="handlerRefresh" />
   </div>
 </template>
 
 <script>
+import axios from 'axios';
 import MovieItem from './MovieItem.vue';
+import MovieData from './MovieData.vue';
 
 export default {
   props: {
@@ -20,9 +36,15 @@ export default {
       required: true,
     }
   },
+
   data() {
     return {
-      apiUrl: this.apiURL,
+      lockProcessing: false,
+      modale: {
+        open: false,
+        edit: false,
+        dataBuff: null,
+      },
       movies: [
         { id: 1, title: `Alibaba`, year: 1999 },
         { id: 2, title: `Gensi`, year: 2002 },
@@ -31,14 +53,62 @@ export default {
       ]
     }
   },
+
   components: {
-    MovieItem
+    MovieItem,
+    MovieData
   },
+
   methods: {
     addMovie() {
-      alert(`add`);
+      if (!this.lockProcessing) {
+        this.lockProcessing = true;
+      this.modale.edit = true;
+      this.modale.dataBuff = null;
+      this.modale.open = true;
+      }      
     },
-  }
+    handlerShowMovie(movie) {
+      if (!this.lockProcessing) {
+        this.lockProcessing = true;
+      this.modale.edit = false;
+      this.modale.dataBuff = movie;
+      this.modale.open = true;
+      }      
+    },
+    handlerEditMovie(movie) {
+      if (!this.lockProcessing) {
+        this.lockProcessing = true;
+      this.modale.edit = true;
+      this.modale.dataBuff = movie;
+      this.modale.open = true;
+      }      
+    },
+    async handlerRefresh() {
+      this.handlerCloseModal();
+      this.lockProcessing = true;
+
+      try {
+        const responce = await axios.get(`${this.apiURL}`);
+        console.log(responce.status);
+        this.movies = responce.data
+      } catch (error) {
+        console.log(error);
+        alert("Sorry, refresh operation failed");
+      }
+
+      this.lockProcessing = false;
+    },
+    handlerCloseModal() {
+      this.modale.open = false;
+      this.modale.dataBuff = null
+      this.lockProcessing = false;
+    }
+  },
+  
+  mounted() {
+    this.handlerRefresh();
+  },
 };
 </script>
 
@@ -61,57 +131,5 @@ export default {
 
 h1 {
   font-size: 90px;
-}
-
-.button-53 {
-  background-color: #3DD1E7;
-  border: 0 solid #E5E7EB;
-  box-sizing: border-box;
-  color: #000000;
-  display: flex;
-  font-family: ui-sans-serif, system-ui, -apple-system, system-ui, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
-  font-size: 1rem;
-  font-weight: 700;
-  justify-content: center;
-  line-height: 1.75rem;
-  padding: .75rem 1.65rem;
-  position: relative;
-  text-align: center;
-  text-decoration: none #000000 solid;
-  text-decoration-thickness: auto;
-  width: 100%;
-  max-width: 460px;
-  position: relative;
-  cursor: pointer;
-  transform: rotate(-1.5deg);
-  user-select: none;
-  -webkit-user-select: none;
-  touch-action: manipulation;
-}
-
-.button-53:focus {
-  outline: 0;
-}
-
-.button-53:after {
-  content: '';
-  position: absolute;
-  border: 1px solid #000000;
-  bottom: 4px;
-  left: 4px;
-  width: calc(100% - 1px);
-  height: calc(100% - 1px);
-}
-
-.button-53:hover:after {
-  bottom: 2px;
-  left: 2px;
-}
-
-@media (min-width: 768px) {
-  .button-53 {
-    padding: .75rem 3rem;
-    font-size: 1.25rem;
-  }
 }
 </style>

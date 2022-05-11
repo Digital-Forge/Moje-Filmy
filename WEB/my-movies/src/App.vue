@@ -1,7 +1,7 @@
 <template>
   <div class="outlineContainer">
     <div class="container">
-      <MovieListApp :apiURL='apiURL'/>
+      <MovieList :apiURL='apiURL'/>
     </div>
   </div>
 </template>
@@ -12,11 +12,11 @@ import MovieList from './components/MovieList.vue'
 export default {
   data() {
     return {
-      apiURL: `http://localhost:44379/api/Movies`
+      apiURL: `https://localhost:44379/api/Movies`
     }
   },
   components: {
-    MovieListApp: MovieList
+    MovieList
 }
 
 }
