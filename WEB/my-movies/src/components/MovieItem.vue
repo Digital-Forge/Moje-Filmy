@@ -2,7 +2,7 @@
     <div class="filmFrame">
         <div class="movieData">
             <p>{{ movie.title }}</p>
-            <p>{{ movie.year }}</p>
+            <p v-if="movie.year >= 1900 & movie.year <=2100">{{ movie.year }}</p>
         </div>
         <div class="showBottom">
             <button class="button-53" @click="showMovie">Show</button>

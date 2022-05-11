@@ -1,13 +1,27 @@
 <template>
     <div class="movieDataWrapper">
-        <p>Title</p>
-        <p v-if="!editStatus">{{ item.title }}</p>
-        <input v-if="editStatus" type="text" v-model="item.title">
-        <p>Year production</p>
-        <p v-if="!editStatus">{{ item.year }}</p>
-        <input v-if="editStatus" type="text" v-model="item.year">
-        <button v-if="editStatus" @click="save">Save</button>
-        <button @click="close">Close</button>
+        <div class="movieDataContent">
+            <div>
+                <p>Title</p>
+                <p v-if="!editStatus">{{ item.title }}</p>
+                <input v-if="editStatus" type="text" v-model="item.title">
+                <div v-if="editStatus || (item.year >= 1900 & item.year <= 2100)">
+                    <p>Year production </p>
+                    <p v-if="!editStatus">{{ item.year }}</p>
+                    <input v-if="editStatus" type="text" v-model="item.year">
+                </div>
+
+            </div>
+            <div class="btnWrapper">
+                <div class="btn">
+                    <button class="button-53" style="background-color: grey;" @click="close">Close</button>
+                </div>
+                <div class="btn" v-if="editStatus">
+                    <button class="button-53" style="background-color: green;" @click="save">Save</button>
+                </div>
+                <div style="clear: both;"></div>
+            </div>
+        </div>
     </div>
 </template>
 
@@ -51,9 +65,9 @@ export default {
                 let responce;
                 try {
                     if (this.item.id === 0) {
-                        responce = await axios.post(`${this.apiURL}`, {id: 0, title: this.item.title, year: Number(this.item.year)});
-                    } else {                        
-                        responce = await axios.put(`${this.apiURL}`, {id: Number(this.item.id), title: this.item.title, year: Number(this.item.year)});
+                        responce = await axios.post(`${this.apiURL}`, { id: 0, title: this.item.title, year: Number(this.item.year) });
+                    } else {
+                        responce = await axios.put(`${this.apiURL}`, { id: Number(this.item.id), title: this.item.title, year: Number(this.item.year) });
                     }
                     console.log(responce.status)
                     this.$emit('save');
@@ -72,13 +86,57 @@ export default {
 </script>
 
 <style scoped>
+p {
+    margin-bottom: 0;
+    margin-top: 25px;
+}
+
+input {
+    font-size: 25px;
+    width: 85%;
+}
+
+.btnWrapper{
+    position: absolute;
+    left: -10px;
+    bottom: 16px;
+    width: 100%;
+}
+
+.btn {
+    float: right;
+    margin: 10px;
+    width: 44%;
+}
+
 .movieDataWrapper {
-    max-width: 100%;
     position: fixed;
-    top: 0;
-    left: 0;
-    display: flex;
+    top: 25%;
+    left: -8px; 
+    right: 0; 
+    margin-left: auto; 
+    margin-right: auto; 
+    z-index: 10;
+
+    justify-content: center;
     align-items: center;
-    padding: 50px;
+
+    width: 475px;
+    min-height: 320px;
+
+
+    background-color: #652701;
+    border-radius: 30px;
+    padding: 8px;
+}
+
+.movieDataContent {
+    padding: 10px;
+    background-color: burlywood;
+    border-radius: 30px;
+    border: 2px dashed black;
+
+    font-size: 30px;
+    min-height: 300px;
 }
 </style>
