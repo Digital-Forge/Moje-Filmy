@@ -45,12 +45,7 @@ export default {
         edit: false,
         dataBuff: null,
       },
-      movies: [
-        { id: 1, title: `Alibaba`, year: 1999 },
-        { id: 2, title: `Gensi`, year: 2002 },
-        { id: 3, title: `Sex`, year: 2050 },
-        { id: 4, title: `Forever`, year: 1950 },
-      ]
+      movies: []
     }
   },
 
